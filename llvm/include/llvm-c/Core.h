@@ -2295,6 +2295,14 @@ LLVMValueRef LLVMGetPreviousGlobal(LLVMValueRef GlobalVar);
 void LLVMDeleteGlobal(LLVMValueRef GlobalVar);
 LLVMValueRef LLVMGetInitializer(LLVMValueRef GlobalVar);
 void LLVMSetInitializer(LLVMValueRef GlobalVar, LLVMValueRef ConstantVal);
+void LLVMAddEnumAttribute(LLVMValueRef GlobalVar, unsigned KindID);
+void LLVMAddStringAttribute(LLVMValueRef GlobalVar,
+                      const char *K, unsigned KLen,
+                      const char *V, unsigned VLen);
+unsigned LLVMGetAttributeCount(LLVMValueRef GlobalVar);
+void LLVMGetAttributes(LLVMValueRef GlobalVar, LLVMAttributeRef *Attrs);
+LLVMAttributeRef LLVMGetEnumAttribute(LLVMValueRef GlobalVar, unsigned KindID);
+LLVMAttributeRef LLVMGetStringAttribute(LLVMValueRef GlobalVar, const char *K, unsigned KLen);
 LLVMBool LLVMIsThreadLocal(LLVMValueRef GlobalVar);
 void LLVMSetThreadLocal(LLVMValueRef GlobalVar, LLVMBool IsThreadLocal);
 LLVMBool LLVMIsGlobalConstant(LLVMValueRef GlobalVar);

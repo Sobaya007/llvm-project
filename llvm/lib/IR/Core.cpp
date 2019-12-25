@@ -2131,6 +2131,39 @@ void LLVMSetInitializer(LLVMValueRef GlobalVar, LLVMValueRef ConstantVal) {
     ->setInitializer(unwrap<Constant>(ConstantVal));
 }
 
+void LLVMAddEnumAttribute(LLVMValueRef GlobalVar, unsigned KindID) {
+  unwrap<GlobalVariable>(GlobalVar)->addAttribute((Attribute::AttrKind)KindID);
+}
+
+void LLVMAddStringAttribute(LLVMValueRef GlobalVar,
+                      const char *K, unsigned KLen,
+                      const char *V, unsigned VLen) {
+  unwrap<GlobalVariable>(GlobalVar)->addAttribute(StringRef(K, KLen),
+                                                  StringRef(V, VLen));
+}
+
+unsigned LLVMGetAttributeCount(LLVMValueRef GlobalVar) {
+  auto AS = unwrap<GlobalVariable>(GlobalVar)->getAttributes();
+  return AS.getNumAttributes();
+}
+
+void LLVMGetAttributes(LLVMValueRef GlobalVar, LLVMAttributeRef *Attrs) {
+  auto AS = unwrap<GlobalVariable>(GlobalVar)->getAttributes();
+  for (auto A : AS)
+    *Attrs++ = wrap(A);
+}
+
+LLVMAttributeRef LLVMGetEnumAttribute(LLVMValueRef GlobalVar,
+                                             unsigned KindID) {
+  return wrap(unwrap<GlobalVariable>(GlobalVar)->getAttribute(
+                                                (Attribute::AttrKind)KindID));
+}
+
+LLVMAttributeRef LLVMGetStringAttribute(LLVMValueRef GlobalVar,
+                                               const char *K, unsigned KLen) {
+  return wrap(unwrap<GlobalVariable>(GlobalVar)->getAttribute(StringRef(K, KLen)));
+}
+
 LLVMBool LLVMIsThreadLocal(LLVMValueRef GlobalVar) {
   return unwrap<GlobalVariable>(GlobalVar)->isThreadLocal();
 }
